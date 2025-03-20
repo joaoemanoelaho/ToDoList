@@ -21,7 +21,13 @@ namespace ToDoList
         {
             int idRemover = idTarefa - 1;
 
-            tarefas.RemoveAt(idRemover);
+            if (tarefas.Count - 1 >= idRemover)
+            {
+                tarefas.RemoveAt(idRemover);
+            }
+
+
+
             return tarefas;
         }
 
@@ -56,25 +62,32 @@ namespace ToDoList
         public List<Tarefa> ListarTarefa()
         {
             System.Console.WriteLine("=== Tarefas ===");
-            foreach (var tarefa in tarefas)
-            {
-                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
-                string dias = data.ToString("dd");
-                int diasEmInteiro = Convert.ToInt32(dias);
 
-                if (tarefa.Concluida == true)
+            int index = 1;
+
+            foreach (var tarefa in tarefas)
                 {
-                    System.Console.WriteLine($"{tarefa.IdTarefa}. [X] {tarefa.Titulo} (Concluido)");
+                    System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
+                    string dias = data.ToString("dd");
+                    int diasEmInteiro = Convert.ToInt32(dias);
+
+                    tarefa.IdTarefa = index;
+
+                    if (tarefa.Concluida == true)
+                    {
+                        System.Console.WriteLine($"{tarefa.IdTarefa}. [X] {tarefa.Titulo} (Concluido)");
+                    }
+                    else if (diasEmInteiro <= 1)
+                    {
+                        System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")}, Urgente!)");
+                    }
+                    else
+                    {
+                        System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")})");
+                    }
+                    index++;
                 }
-                else if (diasEmInteiro <= 1)
-                {
-                    System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")}, Urgente!)");
-                }
-                else
-                {
-                    System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")})");
-                }
-            }
+
 
             return tarefas;
         }

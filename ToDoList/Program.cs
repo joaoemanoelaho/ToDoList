@@ -20,7 +20,14 @@ namespace ToDoList
         System.Console.WriteLine("6. Filtrar Tarefas Pendentes");
         System.Console.WriteLine("7. Filtrar Tarefas Urgentes");
         System.Console.WriteLine("8. Sair");
-        escolha = int.Parse(Console.ReadLine());
+        string input = Console.ReadLine();
+
+        while (!int.TryParse(input, out escolha))
+        {
+          System.Console.Write("Formato inválido, Por favor digite um número para voltar ao sistema: ");
+          input = Console.ReadLine();
+          break;
+        }
 
         switch (escolha)
         {
@@ -39,15 +46,20 @@ namespace ToDoList
 
             string data = DateTime.Now.ToString("dd/MM/yyyy");
 
-            if (!DateTime.TryParse(dataDeVencimento, out DateTime dataConvertida) || dataConvertida < DateTime.Parse(data))
+            if (!DateTime.TryParse(dataDeVencimento, out DateTime dataConvertida))
             {
               System.Console.WriteLine("Data no formato inválido. Exemplo Correto: (12/02/2023)");
               break;
             }
-
-
+            else if
+            (dataConvertida < DateTime.Parse(data))
+            {
+              System.Console.WriteLine($"Data inválida. Data menor que data atual ({data}).");
+              break;
+            }
 
             tarefa.AdicionarTarefa(titulo, dataConvertida);
+            System.Console.WriteLine("Adicionando com sucesso!");
             break;
           case 2:
             tarefa.ListarTarefa();
@@ -61,6 +73,7 @@ namespace ToDoList
             }
 
             tarefa.RemoverTarefa(indexConvertido);
+            System.Console.WriteLine("Removido com sucesso!");
             break;
           case 3:
             tarefa.ListarTarefa();
