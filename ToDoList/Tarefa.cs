@@ -7,13 +7,20 @@ namespace ToDoList
 {
     public class Tarefa
     {
+        public int? IdTarefa { get; set; }
         public string Titulo { get; set; }
+        public DateTime? DataInicial { get; set; } = DateTime.Now;
         public DateTime DataDeVencimento { get; set; }
+        public bool? Concluida { get; set;}
 
-        public Tarefa(string titulo, DateTime dataDeVencimento){
+        public Tarefa(int idTarefa, string titulo, DateTime dataDeVencimento)
+        {
+            IdTarefa = idTarefa;
             Titulo = titulo;
             DataDeVencimento = dataDeVencimento;
         }
+
+
 
     }
 }
