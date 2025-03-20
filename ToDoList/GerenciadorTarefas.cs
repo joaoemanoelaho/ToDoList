@@ -9,9 +9,9 @@ namespace ToDoList
     {
         List<Tarefa> tarefas = new List<Tarefa>();
 
-        public List<Tarefa> AdiconarTarefa(string titulo, DateTime dataDeVencimento)
+        public List<Tarefa> AdicionarTarefa(string titulo, DateTime dataDeVencimento)
         {
-            int idTarefa = tarefas.Count;
+            int idTarefa = tarefas.Count + 1;
 
             tarefas.Add(new Tarefa(idTarefa, titulo, dataDeVencimento));
             return tarefas;
@@ -25,53 +25,114 @@ namespace ToDoList
             return tarefas;
         }
 
-        public List<Tarefa> ListarTarefa()
+        public List<Tarefa> BuscarTarefa(string nomeTarefa)
         {
-            foreach (var tarefa in tarefas)
+            List<Tarefa> tarefasBuscadas = tarefas.FindAll(x => x.Titulo == nomeTarefa);
+            System.Console.WriteLine("=== Tarefas ===");
+
+            foreach (var tarefa in tarefasBuscadas)
             {
-                System.Console.WriteLine($"Id {tarefa.IdTarefa}, Título {tarefa.Titulo}, DataVencimento {tarefa.DataDeVencimento}");
+                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
+                string dias = data.ToString("dd");
+                int diasEmInteiro = Convert.ToInt32(dias);
+
+                if (tarefa.Concluida == true)
+                {
+                    System.Console.WriteLine($"{tarefa.IdTarefa}. [X] {tarefa.Titulo} (Concluido)");
+                }
+                else if (diasEmInteiro <= 1)
+                {
+                    System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")}, Urgente!)");
+                }
+                else
+                {
+                    System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")})");
+                }
             }
 
             return tarefas;
         }
 
-        public List<Tarefa> BuscarTarefa(string nomeTarefa)
+        public List<Tarefa> ListarTarefa()
         {
-            List<Tarefa> tarefasBuscadas = new List<Tarefa>();
+            System.Console.WriteLine("=== Tarefas ===");
+            foreach (var tarefa in tarefas)
+            {
+                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
+                string dias = data.ToString("dd");
+                int diasEmInteiro = Convert.ToInt32(dias);
 
-            System.Console.WriteLine(tarefasBuscadas.FindAll(x => x.Titulo == nomeTarefa));
+                if (tarefa.Concluida == true)
+                {
+                    System.Console.WriteLine($"{tarefa.IdTarefa}. [X] {tarefa.Titulo} (Concluido)");
+                }
+                else if (diasEmInteiro <= 1)
+                {
+                    System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")}, Urgente!)");
+                }
+                else
+                {
+                    System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")})");
+                }
+            }
 
             return tarefas;
         }
 
         public List<Tarefa> MarcarConcluido(int numeroTarefa)
         {
-            int index = numeroTarefa = 1;
-
+            int index = numeroTarefa - 1;
             tarefas[index].Concluida = true;
 
+            ListarTarefa();
+
+            return tarefas;
+        }
+
+        public List<Tarefa> FiltrarTarefaPendente()
+        {
+            System.Console.WriteLine("=== Tarefas ===");
             foreach (var tarefa in tarefas)
             {
+                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
+                string dias = data.ToString("dd");
+                int diasEmInteiro = Convert.ToInt32(dias);
 
-                System.TimeSpan dias = DateTime.Now - tarefa.DataDeVencimento;
-                string convertido = dias.ToString("dd");
-                int diasEmInteiro = Convert.ToInt32(convertido);
+                if (tarefa.Concluida != true)
+                {
+                    if (diasEmInteiro <= 1)
+                    {
+                        System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")}, Urgente!)");
+                    }
+                    else
+                    {
+                        System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")})");
+                    }
+                }
 
-                if (tarefa.Concluida == true)
-                {
-                    System.Console.WriteLine($"[X] {tarefa.Titulo} (Concluido)");
-
-                }
-                else if (diasEmInteiro <= 2)
-                {
-                    System.Console.WriteLine($"[ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento}, Urgente)");
-                }
-                else
-                {
-                    System.Console.WriteLine($"[ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento})");
-                }
             }
 
+
+            return tarefas;
+        }
+
+        public List<Tarefa> FiltrarTarefaUrgente()
+        {
+            System.Console.WriteLine("=== Tarefas ===");
+            foreach (var tarefa in tarefas)
+            {
+                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
+                string dias = data.ToString("dd");
+                int diasEmInteiro = Convert.ToInt32(dias);
+
+                if (tarefa.Concluida != true)
+                {
+                    if (diasEmInteiro <= 1)
+                    {
+                        System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")}, Urgente!)");
+                    }
+                }
+            }
 
             return tarefas;
         }

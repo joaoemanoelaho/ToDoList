@@ -11,7 +11,7 @@ namespace ToDoList
         public string Titulo { get; set; }
         public DateTime? DataInicial { get; set; } = DateTime.Now;
         public DateTime DataDeVencimento { get; set; }
-        public bool? Concluida { get; set;}
+        public bool? Concluida { get; set;} = false;
 
         public Tarefa(int idTarefa, string titulo, DateTime dataDeVencimento)
         {
