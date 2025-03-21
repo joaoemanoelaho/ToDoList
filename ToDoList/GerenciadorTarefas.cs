@@ -21,12 +21,15 @@ namespace ToDoList
         {
             int idRemover = idTarefa - 1;
 
-            if (tarefas.Count - 1 >= idRemover)
+            if (idRemover >= 0 && idRemover < tarefas.Count)
             {
                 tarefas.RemoveAt(idRemover);
+                System.Console.WriteLine("Removido com sucesso!");
             }
-
-
+            else
+            {
+                System.Console.WriteLine("Índice inválido. Nenhuma tarefa removida.");
+            }
 
             return tarefas;
         }
@@ -65,28 +68,33 @@ namespace ToDoList
 
             int index = 1;
 
+            if (tarefas.Count == 0)
+            {
+                System.Console.WriteLine("Nenhum tarefa adicionada!");
+            }
+
             foreach (var tarefa in tarefas)
+            {
+                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
+                string dias = data.ToString("dd");
+                int diasEmInteiro = Convert.ToInt32(dias);
+
+                tarefa.IdTarefa = index;
+
+                if (tarefa.Concluida == true)
                 {
-                    System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
-                    string dias = data.ToString("dd");
-                    int diasEmInteiro = Convert.ToInt32(dias);
-
-                    tarefa.IdTarefa = index;
-
-                    if (tarefa.Concluida == true)
-                    {
-                        System.Console.WriteLine($"{tarefa.IdTarefa}. [X] {tarefa.Titulo} (Concluido)");
-                    }
-                    else if (diasEmInteiro <= 1)
-                    {
-                        System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")}, Urgente!)");
-                    }
-                    else
-                    {
-                        System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")})");
-                    }
-                    index++;
+                    System.Console.WriteLine($"{tarefa.IdTarefa}. [X] {tarefa.Titulo} (Concluido)");
                 }
+                else if (diasEmInteiro <= 1)
+                {
+                    System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")}, Urgente!)");
+                }
+                else
+                {
+                    System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")})");
+                }
+                index++;
+            }
 
 
             return tarefas;
@@ -95,7 +103,16 @@ namespace ToDoList
         public List<Tarefa> MarcarConcluido(int numeroTarefa)
         {
             int index = numeroTarefa - 1;
-            tarefas[index].Concluida = true;
+
+            if (index >= 0 && index < tarefas.Count)
+            {
+                tarefas[index].Concluida = true;
+                System.Console.WriteLine("Removido com sucesso!");
+            }
+            else
+            {
+                System.Console.WriteLine("Índice inválido. Nenhuma tarefa marcada como concluída.");
+            }
 
             ListarTarefa();
 

@@ -24,7 +24,7 @@ namespace ToDoList
 
         while (!int.TryParse(input, out escolha))
         {
-          System.Console.Write("Formato inválido, Por favor digite um número para voltar ao sistema: ");
+          System.Console.Write("Formato inválido, Por favor digite qualquer coisa para voltar ao menu: ");
           input = Console.ReadLine();
           break;
         }
@@ -73,7 +73,7 @@ namespace ToDoList
             }
 
             tarefa.RemoverTarefa(indexConvertido);
-            System.Console.WriteLine("Removido com sucesso!");
+            
             break;
           case 3:
             tarefa.ListarTarefa();
@@ -111,10 +111,6 @@ namespace ToDoList
             break;
         }
       } while (escolha != 8);
-
-
-
-
     }
   }
 }
