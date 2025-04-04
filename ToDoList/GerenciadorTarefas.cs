@@ -11,7 +11,7 @@ namespace ToDoList
 
         public List<Tarefa> AdicionarTarefa(string titulo, DateTime dataDeVencimento)
         {
-            int idTarefa = tarefas.Count + 1;
+            int idTarefa = generateId();
 
             tarefas.Add(new Tarefa(idTarefa, titulo, dataDeVencimento));
             return tarefas;
@@ -19,18 +19,7 @@ namespace ToDoList
 
         public List<Tarefa> RemoverTarefa(int idTarefa)
         {
-            int idRemover = idTarefa - 1;
-
-            if (idRemover >= 0 && idRemover < tarefas.Count)
-            {
-                tarefas.RemoveAt(idRemover);
-                System.Console.WriteLine("Removido com sucesso!");
-            }
-            else
-            {
-                System.Console.WriteLine("Índice inválido. Nenhuma tarefa removida.");
-            }
-
+            foreach (var n in tarefas.Where(tarefa => tarefa.IdTarefa == idTarefa).ToArray()) tarefas.Remove(n);
             return tarefas;
         }
 
@@ -41,9 +30,7 @@ namespace ToDoList
 
             foreach (var tarefa in tarefasBuscadas)
             {
-                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
-                string dias = data.ToString("dd");
-                int diasEmInteiro = Convert.ToInt32(dias);
+                int diasEmInteiro = (tarefa.DataDeVencimento - DateTime.Now).Days;
 
                 if (tarefa.Concluida == true)
                 {
@@ -62,11 +49,16 @@ namespace ToDoList
             return tarefas;
         }
 
+        int id = 1;
+        public int generateId()
+        {
+            return id++;
+        }
+
         public List<Tarefa> ListarTarefa()
         {
             System.Console.WriteLine("=== Tarefas ===");
 
-            int index = 1;
 
             if (tarefas.Count == 0)
             {
@@ -75,11 +67,7 @@ namespace ToDoList
 
             foreach (var tarefa in tarefas)
             {
-                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
-                string dias = data.ToString("dd");
-                int diasEmInteiro = Convert.ToInt32(dias);
-
-                tarefa.IdTarefa = index;
+                int diasEmInteiro = (tarefa.DataDeVencimento - DateTime.Now).Days;
 
                 if (tarefa.Concluida == true)
                 {
@@ -93,7 +81,6 @@ namespace ToDoList
                 {
                     System.Console.WriteLine($"{tarefa.IdTarefa}. [ ] {tarefa.Titulo} (Vence em {tarefa.DataDeVencimento.ToString("dd/MM/yyyy")})");
                 }
-                index++;
             }
 
 
@@ -124,9 +111,7 @@ namespace ToDoList
             System.Console.WriteLine("=== Tarefas ===");
             foreach (var tarefa in tarefas)
             {
-                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
-                string dias = data.ToString("dd");
-                int diasEmInteiro = Convert.ToInt32(dias);
+                int diasEmInteiro = (tarefa.DataDeVencimento - DateTime.Now).Days;
 
                 if (tarefa.Concluida != true)
                 {
@@ -151,9 +136,7 @@ namespace ToDoList
             System.Console.WriteLine("=== Tarefas ===");
             foreach (var tarefa in tarefas)
             {
-                System.TimeSpan data = DateTime.Now - tarefa.DataDeVencimento;
-                string dias = data.ToString("dd");
-                int diasEmInteiro = Convert.ToInt32(dias);
+                int diasEmInteiro = (tarefa.DataDeVencimento - DateTime.Now).Days;
 
                 if (tarefa.Concluida != true)
                 {
